@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MemoryUserRepository implements UserRepository {
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
 
     @Override
     public User findUserByName(String userName) {
