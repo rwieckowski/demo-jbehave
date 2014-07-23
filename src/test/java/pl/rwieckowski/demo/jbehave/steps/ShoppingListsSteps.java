@@ -1,10 +1,10 @@
 package pl.rwieckowski.demo.jbehave.steps;
 
+import doubles.MemoryAccessRepository;
 import doubles.MemoryShoppingListRepository;
 import doubles.MemoryUserRepository;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.jbehave.core.annotations.BeforeStory;
+import org.jbehave.core.annotations.BeforeScenario;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
@@ -19,21 +19,20 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class ShoppingListsSteps {
     private ViewShoppingListsUseCase useCase;
     private List<ShoppingListSummary> shoppingLists;
 
-    @BeforeStory
-    public void setUp() {
+    @BeforeScenario
+    public void initContext() {
         Context.userRepository = new MemoryUserRepository();
         Context.shoppingListRepository = new MemoryShoppingListRepository();
         Context.accessRepository = new MemoryAccessRepository();
         useCase = new ViewShoppingListsUseCase();
     }
 
-    @Given("user $userName")
+    @Given("existing user $userName")
     public void addUser(String userName) {
         User user = new User(userName);
         Context.userRepository.save(user);
@@ -68,6 +67,7 @@ public class ShoppingListsSteps {
 
     @When("user $user views shopping lists")
     public void userViewsShoppingLists(String user) {
+        assertThat(Session.getLoggedInUser(), is(notNullValue()));
         shoppingLists = useCase.viewShoppingLists(Session.getLoggedInUser());
     }
 
@@ -78,7 +78,7 @@ public class ShoppingListsSteps {
 
     @Then("results contains: $shoppingLists")
     public void resultsContains(ExamplesTable shoppingLists) {
-        List<Matcher<? super ShoppingListSummary>> matchers = new ArrayList<Matcher<? super ShoppingListSummary>>();
+        List<Matcher<? super ShoppingListSummary>> matchers = new ArrayList<>();
         for (Map<String, String> row : shoppingLists.getRows()) {
             ShoppingListSummary sls = new ShoppingListSummary();
             sls.title = row.get("title");

@@ -6,14 +6,14 @@ I want to view my shopping lists
 So that I can select shopping list to work with
 
 Scenario: user has no shopping lists
-Given user U
+Given existing user U
 And user U is logged in
 And user U has no shopping lists
 When user U views shopping lists
 Then results are empty
 
 Scenario: user has some shopping lists
-Given user U
+Given existing user U
 And user U is logged in
 And user U has following shopping lists:
 |title|createDate|archived|
