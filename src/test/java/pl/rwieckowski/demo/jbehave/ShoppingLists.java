@@ -11,11 +11,13 @@ import pl.rwieckowski.demo.jbehave.steps.ShoppingListsSteps;
 
 @RunWith(JUnitReportingRunner.class)
 public class ShoppingLists extends JUnitStory {
-    @Override public Configuration configuration() {
+    @Override
+    public Configuration configuration() {
         return new MostUsefulConfiguration();
     }
 
-    @Override public InjectableStepsFactory stepsFactory() {
+    @Override
+    public InjectableStepsFactory stepsFactory() {
         return new InstanceStepsFactory(configuration(), new ShoppingListsSteps());
     }
 }
